@@ -1,9 +1,9 @@
 [versions]
 forgeGradle       = "[7.0.29,8.0)"
 renamer           = "1.1.8"
-jvmDowngrader     = "1.3.6"
-ideaExt           = "1.1.8"
-shadow            = "9.4.2"
+jvmDowngrader     = "2.0.1"
+ideaExt           = "1.4.1"
+shadow            = "9.6.1"
 blossom           = "2.2.0"
 
 [libraries]

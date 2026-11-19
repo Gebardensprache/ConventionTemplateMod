@@ -72,17 +72,17 @@ dependencies {
 tasks.processResources {
     filteringCharset = "UTF-8"
 
-    inputs.property("modId", modId)
-    inputs.property("modName", modName)
+    inputs.property("modId", project.modId)
+    inputs.property("modName", project.modName)
     inputs.property("modVersion", project.version.toString())
-    inputs.property("mcVersion", minecraftVersion)
+    inputs.property("mcVersion", project.minecraftVersion)
 
     filesMatching(listOf("mcmod.info", "pack.mcmeta")) {
         expand(
-            "modId" to modId,
-            "modName" to modName,
+            "modId" to project.modId,
+            "modName" to project.modName,
             "modVersion" to project.version.toString(),
-            "mcVersion" to minecraftVersion
+            "mcVersion" to project.minecraftVersion
         )
     }
 }

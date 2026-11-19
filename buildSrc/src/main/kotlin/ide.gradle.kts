@@ -43,5 +43,5 @@ idea {
 }
 
 tasks.named("processIdeaSettings") {
-    //dependsOn(tasks.named("injectTags"))
+    dependsOn(tasks.named("generateTemplates"))
 }
