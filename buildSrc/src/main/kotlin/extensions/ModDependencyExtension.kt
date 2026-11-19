@@ -1,14 +1,14 @@
 package extensions
 
 import net.minecraftforge.renamer.gradle.RenamerExtension
+import org.gradle.api.Project
 import org.gradle.api.artifacts.Dependency
-import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.internal.artifacts.dependencies.DependencyVariant
 import org.gradle.api.provider.Provider
 
-abstract class ModDependencyExtension(dependencies: DependencyHandler) {
+abstract class ModDependencyExtension(project: Project) {
 
-    private val renamer by lazy { dependencies.extensions.getByType(RenamerExtension::class.java) }
+    private val renamer by lazy { project.extensions.getByType(RenamerExtension::class.java) }
 
     /**
      * Deobfuscates a dependency via renamer extension.

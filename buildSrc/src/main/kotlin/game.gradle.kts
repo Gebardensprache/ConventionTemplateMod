@@ -66,7 +66,7 @@ minecraft {
 dependencies {
     implementation(minecraft.dependency("net.minecraftforge:forge:${minecraftVersion}-${forgeVersion}"))
 
-    extensions.create("mod", ModDependencyExtension::class.java, dependencies)
+    extensions.create("mod", ModDependencyExtension::class.java, project)
 }
 
 tasks.processResources {

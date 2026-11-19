@@ -5,6 +5,9 @@ plugins {
 dependencies {
     compileOnlyApi(libs.annotations)
     compileOnlyApi(libs.jspecify)
+
+    implementation(mod.of(libs.theOneProbe))
+    implementation(mod.of(libs.jei))
 }
 
 configurations {
