@@ -32,7 +32,9 @@ minecraft {
     runs {
         configureEach {
             workingDir.convention(layout.projectDirectory.dir("run"))
-            jvmArgs(extJavaArgs)
+            if (extJavaArgs.isNotEmpty()) {
+                jvmArgs(extJavaArgs)
+            }
             if (System.getProperty("os.name").lowercase().contains("mac")) {
                 jvmArgs("-XstartOnFirstThread")
             }
