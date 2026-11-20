@@ -12,7 +12,7 @@ import utils.modGroup
 import utils.modId
 import utils.modName
 import utils.modVersion
-import xyz.wagyourtail.jvmdg.gradle.task.DowngradeJar
+import xyz.wagyourtail.jvmdg.gradle.task.ShadeJar
 
 plugins {
     `java-library`
@@ -89,27 +89,8 @@ tasks.processResources {
     }
 }
 
-val reobfJar = renamer.classes(tasks.named("shadowJar", Jar::class.java)) {
-    archiveClassifier.set("")
-    mappings(renamer.mixin.generatedMappings)
-}
-
-tasks.named("assemble") {
-    dependsOn(reobfJar)
-}
-
-tasks.named<DowngradeJar>("downgradeJar") {
-    inputFile.set(reobfJar.get().output)
-}
-
-tasks.register<Jar>("sourcesJar") {
-    archiveClassifier.set("sources")
-    from(sourceSets["main"].allSource)
-}
-
-renamer.mappings(minecraft.dependency.toSrg)
-
-tasks.named<Jar>("jar") {
+tasks.jar {
+    archiveClassifier.set("dev-modern")
     manifest {
         if (accessTransformersFile.isNotEmpty()) {
             attributes["FMLAT"] = accessTransformersFile
@@ -123,6 +104,39 @@ tasks.named<Jar>("jar") {
         }
     }
 }
+
+val renameJar = renamer.classes("renameJar", tasks.named("shadeDowngradedApi", ShadeJar ::class.java)) {
+    archiveClassifier.set("")
+    mappings(renamer.mixin.generatedMappings)
+}
+
+val renameModernJar = renamer.classes("renameModernJar", tasks.named("jar", Jar::class.java)) {
+    archiveClassifier.set("modern")
+    mappings(renamer.mixin.generatedMappings)
+}
+
+tasks.assemble {
+    dependsOn(renameJar)
+    dependsOn(renameModernJar)
+}
+
+tasks.register<Jar>("sourcesJar") {
+    description = "Assembles a jar archive containing the main sources."
+    archiveClassifier.set("sources")
+    from(sourceSets["main"].allSource)
+}
+
+tasks.withType(JavaExec::class.java).configureEach {
+    if (name.startsWith("run")) {
+        javaLauncher.set(
+            javaToolchains.launcherFor {
+                languageVersion.set(JavaLanguageVersion.of(8))
+            }
+        )
+    }
+}
+
+renamer.mappings(minecraft.dependency.toSrg)
 
 sourceSets {
     main {

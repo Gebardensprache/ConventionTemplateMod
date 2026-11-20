@@ -19,7 +19,7 @@ abstract class ModDependencyExtension(project: Project) {
             is Dependency -> of(dependencyNotation)
             is DependencyVariant -> of(dependencyNotation)
             is Provider<*> -> of(dependencyNotation.get())
-            else -> renamer.dependency(dependencyNotation.toString()) { accessTransformers.set(false) }
+            else -> renamer.dependency(dependencyNotation.toString()) { accessTransformers.set(true) }
         }
     }
 
@@ -32,6 +32,6 @@ abstract class ModDependencyExtension(project: Project) {
         if (dependency is DependencyVariant) {
             depSpec = "$depSpec:${(dependency as DependencyVariant).classifier}"
         }
-        return renamer.dependency(depSpec) { accessTransformers.set(false) }
+        return renamer.dependency(depSpec) { accessTransformers.set(true) }
     }
 }
